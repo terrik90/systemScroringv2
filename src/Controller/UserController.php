@@ -71,6 +71,13 @@ final class UserController extends AbstractController
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
+        // Проверяем, не пытается ли пользователь удалить свой собственный аккаунт
+        $currentUser = $this->getUser();
+        if ($currentUser instanceof User && $user->getId() === $currentUser->getId()) {
+            $this->addFlash('error', 'Вы не можете удалить свой собственный аккаунт.');
+            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        }
+
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($user);
             $entityManager->flush();
