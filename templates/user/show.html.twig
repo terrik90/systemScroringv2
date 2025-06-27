@@ -1,50 +1,75 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}User{% endblock %}
+{% block title %}Просмотр пользователя{% endblock %}
 
 {% block body %}
-    <h1>User</h1>
+    <div class="container-fluid py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h2 mb-0">Информация о пользователе</h1>
+            <div class="btn-group">
+                <a href="{{ path('app_user_index') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left"></i> Назад к списку
+                </a>
+                <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-warning">
+                    <i class="fas fa-edit"></i> Редактировать
+                </a>
+                {{ include('user/_delete_form.html.twig') }}
+            </div>
+        </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ user.email }}</td>
-            </tr>
-            <tr>
-                <th>Firstname</th>
-                <td>{{ user.firstname }}</td>
-            </tr>
-            <tr>
-                <th>Lastname</th>
-                <td>{{ user.lastname }}</td>
-            </tr>
-            <tr>
-                <th>Phone</th>
-                <td>{{ user.phone }}</td>
-            </tr>
-            <tr>
-                <th>Education</th>
-                <td>{{ user.education }}</td>
-            </tr>
-            <tr>
-                <th>Consent</th>
-                <td>{{ user.consent ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Score</th>
-                <td>{{ user.score }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_user_index') }}">back to list</a>
-
-    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
-
-    {{ include('user/_delete_form.html.twig') }}
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="table-responsive">
+                            <table class="table table-bordered mb-0">
+                                <tbody>
+                                    <tr>
+                                        <th class="bg-light w-25">ID</th>
+                                        <td>{{ user.id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light">Email</th>
+                                        <td>{{ user.email }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light">Имя</th>
+                                        <td>{{ user.firstname }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light">Фамилия</th>
+                                        <td>{{ user.lastname }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light">Телефон</th>
+                                        <td>{{ user.phone }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light">Образование</th>
+                                        <td>{{ user.education }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light">Согласие</th>
+                                        <td>
+                                            {% if user.consent %}
+                                                <span class="badge badge-success">Да</span>
+                                            {% else %}
+                                                <span class="badge badge-danger">Нет</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light">Баллы</th>
+                                        <td>
+                                            <span class="badge badge-primary">{{ user.score }}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
