@@ -35,8 +35,9 @@
                                 {{ form_row(registrationForm.consent, {'attr': {'class': 'form-check-input me-2'}}) }}
                             </div>
 
-                            <div class="d-grid">
+                            <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+                                <a href="{{ path('app_login') }}" class="btn btn-secondary">Я уже зарегистрирован</a>
                             </div>
                         {{ form_end(registrationForm) }}
                     </div>
