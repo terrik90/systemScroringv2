@@ -74,7 +74,7 @@ final class UserController extends AbstractController
         // Проверяем, не пытается ли пользователь удалить свой собственный аккаунт
         $currentUser = $this->getUser();
         if ($currentUser instanceof User && $user->getId() === $currentUser->getId()) {
-            $this->addFlash('error', 'Вы не можете удалить свой собственный аккаунт.');
+            $this->addFlash('danger', 'Невозможно удалить свой собственный аккаунт, так как вы в данный момент авторизованы через него.');
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
 

@@ -19,7 +19,6 @@
                 <th>Education</th>
                 <th>Consent</th>
                 <th>Score</th>
-                <th>Roles</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -34,7 +33,6 @@
                 <td>{{ user.education }}</td>
                 <td>{{ user.consent ? 'Yes' : 'No' }}</td>
                 <td>{{ user.score }}</td>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
                 <td>
                     <a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
                     <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
@@ -42,7 +40,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="10">no records found</td>
+                <td colspan="9">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

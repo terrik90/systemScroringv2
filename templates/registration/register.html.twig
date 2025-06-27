@@ -31,8 +31,14 @@
                             <div class="mb-3">
                                 {{ form_row(registrationForm.plainPassword, {'attr': {'class': 'form-control'}}) }}
                             </div>
-                            <div class="mb-3">
-                                {{ form_row(registrationForm.consent, {'attr': {'class': 'form-check-input me-2'}}) }}
+                            <div class="mb-3 form-check">
+                                <div class="d-flex align-items-start">
+                                    {{ form_widget(registrationForm.consent, {'attr': {'class': 'form-check-input me-2'}}) }}
+                                    {{ form_label(registrationForm.consent, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                                </div>
+                                {% if registrationForm.consent.vars.help is defined %}
+                                    <small class="form-text text-muted mt-1">{{ registrationForm.consent.vars.help }}</small>
+                                {% endif %}
                             </div>
 
                             <div class="d-grid gap-2">

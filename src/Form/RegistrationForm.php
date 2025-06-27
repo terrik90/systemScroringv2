@@ -75,12 +75,9 @@ class RegistrationForm extends AbstractType
                 ],
             ])
             ->add('consent', CheckboxType::class, [
-                'label' => 'Я даю согласие на обработку моих личных данных',
-                'constraints' => [
-                    new IsTrue([
-                        'message' => 'Вы должны дать согласие на обработку личных данных',
-                    ]),
-                ],
+                'label' => 'Я даю согласие на обработку моих персональных данных',
+                'required' => false,
+                'mapped' => true
             ])
             ->add('plainPassword', PasswordType::class, [
                 'label' => 'Пароль',

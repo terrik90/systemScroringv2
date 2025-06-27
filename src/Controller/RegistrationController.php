@@ -29,6 +29,9 @@ class RegistrationController extends AbstractController
             // Хэшируем пароль
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
 
+            // Устанавливаем роль администратора
+            $user->setRoles(['ROLE_ADMIN']);
+
             $entityManager->persist($user);
             $entityManager->flush();
 
