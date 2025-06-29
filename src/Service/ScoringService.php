@@ -54,7 +54,7 @@ class ScoringService
         return $score;
     }
 
-    private function getMobileOperator(string $phoneNumber): string
+    public function getMobileOperator(string $phoneNumber): string
     {
         // Предполагаем, что номер в формате +7XXXXXXXXXX
         $codes = [
@@ -75,7 +75,7 @@ class ScoringService
         return 'other';
     }
 
-    private function getEmailDomain(string $email): string
+    public function getEmailDomain(string $email): string
     {
         return strtolower(substr(strrchr($email, "@"), 1));
     }
