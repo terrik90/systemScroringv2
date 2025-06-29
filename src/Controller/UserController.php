@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserForm;
 use App\Repository\UserRepository;
+use App\Service\ScoringService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +16,10 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 #[Route('/user')]
 final class UserController extends AbstractController
 {
+    public function __construct(
+        private readonly ScoringService $scoringService
+    ) {}
+
     #[Route(name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
@@ -37,8 +42,14 @@ final class UserController extends AbstractController
             $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
             $user->setPassword($hashedPassword);
 
+            // Рассчитываем скоринг
+            $score = $this->scoringService->calculateScore($user);
+            $user->setScore($score);
+
             $entityManager->persist($user);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Пользователь создан! Скоринговый балл: ' . $score);
 
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -70,7 +81,13 @@ final class UserController extends AbstractController
                 $user->setPassword($hashedPassword);
             }
 
+            // Пересчитываем скоринг
+            $score = $this->scoringService->calculateScore($user);
+            $user->setScore($score);
+
             $entityManager->flush();
+
+            $this->addFlash('success', 'Данные пользователя обновлены! Новый скоринговый балл: ' . $score);
 
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }

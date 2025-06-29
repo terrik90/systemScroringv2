@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationForm;
+use App\Service\ScoringService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +14,10 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class RegistrationController extends AbstractController
 {
+    public function __construct(
+        private readonly ScoringService $scoringService
+    ) {}
+
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
@@ -29,8 +34,12 @@ class RegistrationController extends AbstractController
             // Хэшируем пароль
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
 
-            // Устанавливаем роль администратора
+            // Устанавливаем роль пользователя
             $user->setRoles(['ROLE_ADMIN']);
+
+            // Рассчитываем и устанавливаем скоринг
+            $score = $this->scoringService->calculateScore($user);
+            $user->setScore($score);
 
             $entityManager->persist($user);
             $entityManager->flush();
