@@ -71,13 +71,18 @@ final class UserController extends AbstractController
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
-        $form = $this->createForm(UserForm::class, $user);
+        $form = $this->createForm(UserForm::class, $user, [
+            'is_edit' => true
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Хешируем пароль только если он был изменен
-            if ($user->getPassword()) {
-                $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
+            // Получаем введенный пароль
+            $plainPassword = $form->get('password')->getData();
+
+            // Хешируем пароль только если новый пароль был введен
+            if (!empty($plainPassword)) {
+                $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
                 $user->setPassword($hashedPassword);
             }
 

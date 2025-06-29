@@ -1,8 +1,8 @@
 <form method="post" action="{{ path('app_user_delete', {'id': user.id}) }}" 
-      onsubmit="return confirm('Вы уверены, что хотите удалить этого пользователя?\nЭто действие нельзя будет отменить.');" 
+      onsubmit="return confirm('Вы действительно хотите удалить этого пользователя?\nВсе данные пользователя будут безвозвратно удалены.');" 
       class="d-inline">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
     <button type="submit" class="btn btn-outline-danger">
-        <i class="fas fa-trash-alt mr-2"></i>Удалить пользователя
+        <i class="fas fa-trash-alt me-2"></i>Удалить
     </button>
 </form>

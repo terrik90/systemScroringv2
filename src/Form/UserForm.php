@@ -69,10 +69,10 @@ class UserForm extends AbstractType
             ])
             ->add('consent')
             ->add('password', PasswordType::class, [
-                'mapped' => true,
-                'required' => true,
-                'label' => 'Password',
-                'constraints' => [
+                'mapped' => !$options['is_edit'],
+                'required' => !$options['is_edit'],
+                'label' => 'Пароль',
+                'constraints' => $options['is_edit'] ? [] : [
                     new NotBlank([
                         'message' => 'Пожалуйста, введите пароль',
                     ]),
@@ -93,6 +93,7 @@ class UserForm extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'is_edit' => false,
         ]);
     }
 }
