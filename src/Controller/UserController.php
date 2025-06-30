@@ -49,7 +49,7 @@ final class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Пользователь создан! Скоринговый балл: ' . $score);
+            $this->addFlash('success', 'Пользователь создан!');
 
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
