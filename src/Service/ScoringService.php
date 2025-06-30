@@ -36,22 +36,34 @@ class ScoringService
     {
         $score = 0;
 
-        // Calculate mobile operator score
-        $mobileOperator = $this->getMobileOperator($user->getPhone());
-        $score += self::MOBILE_OPERATOR_SCORES[$mobileOperator] ?? self::MOBILE_OPERATOR_SCORES['other'];
-
-        // Calculate email domain score
-        $emailDomain = $this->getEmailDomain($user->getEmail());
-        $score += self::EMAIL_DOMAIN_SCORES[$emailDomain] ?? self::EMAIL_DOMAIN_SCORES['other'];
-
-        // Calculate education score
-        $education = $user->getEducation();
-        $score += self::EDUCATION_SCORES[$education] ?? self::EDUCATION_SCORES['other'];
-
-        // Calculate consent score
-        $score += self::CONSENT_SCORES[$user->isConsent()];
+        $score += $this->getMobileOperatorScore($user->getPhone());
+        $score += $this->getEmailDomainScore($user->getEmail());
+        $score += $this->getEducationScore($user->getEducation());
+        $score += $this->getConsentScore($user->isConsent());
 
         return $score;
+    }
+
+    public function getMobileOperatorScore(string $phoneNumber): int
+    {
+        $operator = $this->getMobileOperator($phoneNumber);
+        return self::MOBILE_OPERATOR_SCORES[$operator] ?? self::MOBILE_OPERATOR_SCORES['other'];
+    }
+
+    public function getEmailDomainScore(string $email): int
+    {
+        $domain = $this->getEmailDomain($email);
+        return self::EMAIL_DOMAIN_SCORES[$domain] ?? self::EMAIL_DOMAIN_SCORES['other'];
+    }
+
+    public function getEducationScore(string $education): int
+    {
+        return self::EDUCATION_SCORES[$education] ?? self::EDUCATION_SCORES['other'];
+    }
+
+    public function getConsentScore(bool $consent): int
+    {
+        return self::CONSENT_SCORES[$consent];
     }
 
     public function getMobileOperator(string $phoneNumber): string
